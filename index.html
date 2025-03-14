@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration & Rewards</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f0f8ff; }
+        .popup, .wallet-popup, .success-popup, .error-popup, .ad-popup { 
+            display: none; 
+            position: fixed; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 80vw; height: 50vh; 
+            background: white; 
+            border-radius: 10px; 
+            box-shadow: 0px 0px 15px gray;
+            padding: 20px; 
+            z-index: 1000;
+        }
+        .wallet-popup { height: auto; width: 60vw; padding: 20px; }
+        .success-popup, .error-popup { height: auto; width: 40vw; text-align: center; padding: 30px; }
+        .wallet-icon, .close-popup, .close-wallet, .close-success, .close-error, .close-ad { cursor: pointer; float: right; font-size: 20px; }
+        .earn-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .earn-option { 
+            text-align: center; 
+            cursor: pointer; 
+            font-size: 24px; 
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .wallet { position: fixed; top: 10px; right: 10px; cursor: pointer; font-size: 18px; background: yellow; padding: 10px; border-radius: 5px; }
+        select, button { padding: 10px; font-size: 16px; margin-top: 10px; }
+        .register-container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0px 0px 15px gray; width: 50%; margin: auto; }
+    </style>
+</head>
+<body>
+    <div id="registerPage" class="register-container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" id="fullName" placeholder="Full Name" required> <br><br>
+            <input type="tel" id="mobile" placeholder="Mobile Number" required> <br><br>
+            <button type="button" onclick="submitRegistration()">Submit</button>
+        </form>
+    </div>
+    
+    <div id="popup" class="popup">
+        <span class="close-popup" onclick="closePopup()">&times;</span>
+        <h3>Earn Coins</h3>
+        <div class="earn-options">
+            <div class="earn-option" onclick="openAdPopup()">📺<br>Watch Ads (5 coins)</div>
+            <div class="earn-option" onclick="earnCoins('playGame')">🎮<br>Play Games (10 coins)</div>
+            <div class="earn-option" onclick="earnCoins('fillSurvey')">📋<br>Fill Surveys (10 coins)</div>
+            <div class="earn-option" onclick="earnCoins('inviteFriends')">👥<br>Invite Friends (15 coins)</div>
+        </div>
+        <div class="wallet" onclick="openWallet()">💰 Wallet: <span id="coinCount">10</span> Coins</div>
+    </div>
+    
+    <div id="adPopup" class="ad-popup">
+        <span class="close-ad" onclick="closeAdPopup()">&times;</span>
+        <h3>Watch Ad</h3>
+        <div>
+            <iframe id="adFrame" width="100%" height="300px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <button onclick="rewardAdCoins()">Claim 5 Coins</button>
+    </div>
+    
+    <script>
+        let coins = 10;
+        function submitRegistration() {
+            document.getElementById("registerPage").style.display = "none";
+            openPopup();
+        }
+        function openPopup() {
+            document.getElementById("popup").style.display = "block";
+        }
+        function openAdPopup() {
+            document.getElementById("adPopup").style.display = "block";
+        }
+        function closeAdPopup() {
+            document.getElementById("adPopup").style.display = "none";
+        }
+        function rewardAdCoins() {
+            coins += 5;
+            document.getElementById("coinCount").innerText = coins;
+            document.getElementById("walletCoins").innerText = coins;
+            closeAdPopup();
+        }
+        function earnCoins(type) {
+            let amount = 0;
+            switch(type) {
+                case 'playGame': amount = 10; break;
+                case 'fillSurvey': amount = 10; break;
+                case 'inviteFriends': amount = 15; break;
+            }
+            coins += amount;
+            document.getElementById("coinCount").innerText = coins;
+            document.getElementById("walletCoins").innerText = coins;
+        }
+        function openWallet() { document.getElementById("walletPopup").style.display = "block"; }
+        function closeWallet() { document.getElementById("walletPopup").style.display = "none"; }
+        function closePopup() { document.getElementById("popup").style.display = "none"; }
+    </script>
+</body>
+</html>
